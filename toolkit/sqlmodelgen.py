@@ -12,13 +12,20 @@ import configparser
 
 
 def generate_model(table_name, path, file_name):
+
     # 讀取設定檔
-
     config = configparser.ConfigParser()
-    config.read('config.ini')
-    postgresql_key = config.get('postgresql', 'password')
+    config.read('/home/cheng1103/workspace/ETL/config.ini')
+    user = config.get('postgresql', 'user')
+    key = config.get('postgresql', 'password')
+    host = config.get('postgresql', 'host')
+    port = config.get('postgresql', 'port')
+    db = config.get('postgresql', 'database')
 
-    command = f'sqlacodegen postgresql://postgres:{postgresql_key}@localhost:5432/practice --table {table_name} --outfile={path}/{file_name}.py'
+    # 建構指令
+    command = f'sqlacodegen postgresql://{user}:{key}@{host}:{port}/{db} --table {table_name} --outfile={path}/{file_name}.py'
+
+    # 執行指令
     os.system(command)
 
 
