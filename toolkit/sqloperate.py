@@ -32,8 +32,8 @@ class SqlOperate:
     # 分割資料
     def __split_data(self, data, batch_size):
         batches = []
-        for i in range(0, len(data), batch_size):
-            batch = data[i:i + batch_size]
+        for idx in range(0, len(data), batch_size):
+            batch = data[idx:idx + batch_size]
             batches.append(batch)
         return batches
 
