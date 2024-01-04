@@ -40,8 +40,8 @@ if __name__ == '__main__':
 
     try:
         sql_model_gen.postgres_model(table_name, path, file_name)
-        print('表模型建立成功！')
+        print('表模型建立成功！！！')
 
     except Exception as e:
         print(e)
-        print('表模型建立失敗！')
+        print('發生錯誤！表模型建立失敗！')
