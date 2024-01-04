@@ -38,4 +38,10 @@ if __name__ == '__main__':
     path = input("請輸入存放位置：")
     file_name = input("請輸入檔案名稱：")
 
-    sql_model_gen.postgres_model(table_name, path, file_name)
+    try:
+        sql_model_gen.postgres_model(table_name, path, file_name)
+        print('表模型建立成功！')
+
+    except Exception as e:
+        print(e)
+        print('表模型建立失敗！')
