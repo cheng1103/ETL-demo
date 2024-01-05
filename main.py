@@ -1,9 +1,10 @@
 # 啟動 API 指令
 # uvicorn main:app --reload
-
+import json
+from toolkit.sqloperate import SqlOperate
 from fastapi import FastAPI
 from typing import Optional
-from toolkit.sqloperate import SqlOperate
+
 
 app = FastAPI()  # 建立一個 Fast API application
 
@@ -35,10 +36,10 @@ async def get_quote(start: int, end: int):
         FROM excercise
         WHERE excercise."Id" BETWEEN :from AND :end 
     """
-    syntax_params_dict = {
+    syntax_params = {
         'from': start,
         'end': end,
     }
     sql_operate = SqlOperate()
-    query_result = sql_operate.pg_api_query(syntax, syntax_params_dict)
-    return query_result
+    data = sql_operate.pg_api_query(syntax, syntax_params)
+    return data
