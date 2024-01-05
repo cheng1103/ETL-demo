@@ -35,17 +35,23 @@ class SqlOperate:
     def pg_api_query(self, syntax, syntax_params_dict):
         with Session(self.pg_sql_engine) as session:
             query_result = session.execute(text(syntax), syntax_params_dict)
-            query_result = query_result.fetchall()
+            query_data = query_result.fetchall()
+            query_column_names = query_result.keys()
 
-        return query_result
+            result = [dict(zip(query_column_names, row)) for row in query_data]
+
+        return result
 
     # 查詢資料
     def pg_query(self, syntax):
         with Session(self.pg_sql_engine) as session:
             query_result = session.execute(text(syntax))
-            query_result = query_result.fetchall()
+            query_data = query_result.fetchall()
+            query_column_names = query_result.keys()
 
-        return query_result
+            result = [dict(zip(query_column_names, row)) for row in query_data]
+
+        return result
 
     # 新增資料
     def pg_insert(self, table, data, batch_size=10000):
