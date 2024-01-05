@@ -1,3 +1,6 @@
+# 後續修改為非同步
+# 延伸為新增或修改 upsert
+
 import configparser
 from tqdm import tqdm
 from sqlalchemy import create_engine, insert, text
@@ -21,10 +24,25 @@ class SqlOperate:
         DATABASE_URL = f"postgresql://{pg_user}:{pg_key}@{pg_host}:{pg_port}/{pg_db}"
         self.pg_sql_engine = create_engine(DATABASE_URL)  # 使用create_engine建立連線
 
-    # 查詢資料
-    def pg_query(self, query):
+    # API 查詢資料
+        '''
+        防止API利用SQL注入
+        
+        輸入：SQL語法、查詢參數
+        輸出：返回查詢資料
+        '''
+
+    def pg_api_query(self, syntax, syntax_params_dict):
         with Session(self.pg_sql_engine) as session:
-            query_result = session.execute(text(query))
+            query_result = session.execute(text(syntax), syntax_params_dict)
+            query_result = query_result.fetchall()
+
+        return query_result
+
+    # 查詢資料
+    def pg_query(self, syntax):
+        with Session(self.pg_sql_engine) as session:
+            query_result = session.execute(text(syntax))
             query_result = query_result.fetchall()
 
         return query_result
