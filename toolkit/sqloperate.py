@@ -29,18 +29,15 @@ class SqlOperate:
 
         return query_result
 
-    # 分割資料
-    def __split_data(self, data, batch_size):
+    # 新增資料
+    def pg_insert(self, table, data, batch_size=10000):
         batches = []
         for idx in range(0, len(data), batch_size):
             batch = data[idx: idx + batch_size]
             batches.append(batch)
-        return batches
 
-    # 新增資料
-    def pg_insert(self, table, data, batch_size=10000):
         with Session(self.pg_sql_engine) as session:
-            for batch_data in tqdm(self.__split_data(data, batch_size), desc='資料寫入進度'):
+            for batch_data in tqdm(batches, desc='資料寫入進度'):
 
                 try:
                     insert_result = session.execute(insert(table), batch_data)
